@@ -217,11 +217,11 @@ def run(
                         pred = torch.cat((pred, model(image, augment=augment, visualize=visualize).unsqueeze(0)), dim=0)
                 pred = [pred, None]
             else:
-                image_path = '../data/images/bus_preprocessed.jpg'
+                image_path = 'bus_preprocessed.jpg'
                 im = preprocess_image(image_path)
 
                 # 加载拆分后的模型
-                models = [torch.load(f'backbone_model_{i + 1}.pth') for i in range(25)]
+                models = [torch.load(f'sub_model/sub_model{i}.pth') for i in range(25)]
 
                 # 将模型设置为评估模式
                 for model in models:
@@ -229,12 +229,14 @@ def run(
 
                 cache = []
 
+                depend_list_DAG = []
                 # 2. 按顺序计算每个模型
                 with torch.no_grad():
                     for i in range(len(models)):
                         sequential = models[i]
                         model = sequential[0]
                         depend_list = model.f
+                        depend_list_DAG.append(depend_list)
 
                         if i == 0:
                             intput = im

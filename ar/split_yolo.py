@@ -29,4 +29,4 @@ for i in range(num_splits):
     sub_model = nn.Sequential(*sub_model_layers)
 
     # 保存子模型
-    torch.save(sub_model, os.path.join(save_dir, f'sub_model{i + 1}.pth'))
+    torch.save(sub_model, os.path.join(save_dir, f'sub_model{i}.pth'))
